@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type StudentServiceClient interface {
 	GetStudent(ctx context.Context, in *GetStudentRequest, opts ...grpc.CallOption) (*Student, error)
-	SetStudnet(ctx context.Context, in *Student, opts ...grpc.CallOption) (*SetStudentResponse, error)
+	SetStudent(ctx context.Context, in *Student, opts ...grpc.CallOption) (*SetStudentResponse, error)
 }
 
 type studentServiceClient struct {
@@ -43,9 +43,9 @@ func (c *studentServiceClient) GetStudent(ctx context.Context, in *GetStudentReq
 	return out, nil
 }
 
-func (c *studentServiceClient) SetStudnet(ctx context.Context, in *Student, opts ...grpc.CallOption) (*SetStudentResponse, error) {
+func (c *studentServiceClient) SetStudent(ctx context.Context, in *Student, opts ...grpc.CallOption) (*SetStudentResponse, error) {
 	out := new(SetStudentResponse)
-	err := c.cc.Invoke(ctx, "/student.StudentService/SetStudnet", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/student.StudentService/SetStudent", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (c *studentServiceClient) SetStudnet(ctx context.Context, in *Student, opts
 // for forward compatibility
 type StudentServiceServer interface {
 	GetStudent(context.Context, *GetStudentRequest) (*Student, error)
-	SetStudnet(context.Context, *Student) (*SetStudentResponse, error)
+	SetStudent(context.Context, *Student) (*SetStudentResponse, error)
 	mustEmbedUnimplementedStudentServiceServer()
 }
 
@@ -68,8 +68,8 @@ type UnimplementedStudentServiceServer struct {
 func (UnimplementedStudentServiceServer) GetStudent(context.Context, *GetStudentRequest) (*Student, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetStudent not implemented")
 }
-func (UnimplementedStudentServiceServer) SetStudnet(context.Context, *Student) (*SetStudentResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SetStudnet not implemented")
+func (UnimplementedStudentServiceServer) SetStudent(context.Context, *Student) (*SetStudentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetStudent not implemented")
 }
 func (UnimplementedStudentServiceServer) mustEmbedUnimplementedStudentServiceServer() {}
 
@@ -102,20 +102,20 @@ func _StudentService_GetStudent_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
-func _StudentService_SetStudnet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _StudentService_SetStudent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Student)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StudentServiceServer).SetStudnet(ctx, in)
+		return srv.(StudentServiceServer).SetStudent(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/student.StudentService/SetStudnet",
+		FullMethod: "/student.StudentService/SetStudent",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StudentServiceServer).SetStudnet(ctx, req.(*Student))
+		return srv.(StudentServiceServer).SetStudent(ctx, req.(*Student))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -132,8 +132,8 @@ var StudentService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _StudentService_GetStudent_Handler,
 		},
 		{
-			MethodName: "SetStudnet",
-			Handler:    _StudentService_SetStudnet_Handler,
+			MethodName: "SetStudent",
+			Handler:    _StudentService_SetStudent_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

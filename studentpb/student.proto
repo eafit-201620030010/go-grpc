@@ -20,5 +20,5 @@ message SetStudentResponse {
 
 service StudentService {
   rpc GetStudent(GetStudentRequest) returns (Student);
-  rpc SetStudnet(Student) returns (SetStudentResponse);
+  rpc SetStudent(Student) returns (SetStudentResponse);
 }
