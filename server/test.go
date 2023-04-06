@@ -7,6 +7,7 @@ import (
 	"jjchavarrg.com/go/grpc/repository"
 	"jjchavarrg.com/go/grpc/studentpb"
 	"jjchavarrg.com/go/grpc/testpb"
+	"log"
 	"time"
 )
 
@@ -115,4 +116,40 @@ func (s *TestServer) GetStudentsPerTest(req *testpb.GetStudentsPerTestRequest, s
 		}
 	}
 	return nil
+}
+
+func (s *TestServer) TakeTest(stream testpb.TestService_TakeTestServer) error {
+	questions, err := s.repo.GetQuestionsPerTest(context.Background(), "t1")
+	if err != nil {
+		return err
+	}
+	i := 0
+	var currentQuestion = &models.Question{}
+	for {
+		if i < len(questions) {
+			currentQuestion = questions[i]
+		}
+
+		if i <= len(questions)-1 {
+			questionToSend := &testpb.Question{
+				Id:       currentQuestion.Id,
+				Question: currentQuestion.Question,
+			}
+			err := stream.Send(questionToSend)
+			if err != nil {
+				log.Printf("Error sending question: %v", err)
+				return err
+			}
+			i++
+		}
+		answer, err := stream.Recv()
+		if err == io.EOF {
+			return nil
+		}
+		if err != nil {
+			log.Printf("Error receiving answer: %v", err)
+			return err
+		}
+		log.Println("Answer for question:", currentQuestion.Question, "is", answer.GetAnswer())
+	}
 }
