@@ -12,3 +12,13 @@ CREATE TABLE tests(
   id VARCHAR(32) PRIMARY KEY,
   name VARCHAR(255) NOT NULL
 );
+
+DROP TABLE IF EXISTS questions;
+
+CREATE TABLE questions(
+  id VARCHAR(32) PRIMARY KEY,
+  question VARCHAR(225) NOT NULL,
+  answer VARCHAR(225) NOT NULL,
+  test_id VARCHAR(32) NOT NULL,
+  FOREIGN KEY (test_id) REFERENCES tests(id)
+);
