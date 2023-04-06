@@ -27,7 +27,7 @@ type TestServiceClient interface {
 	SetTest(ctx context.Context, in *Test, opts ...grpc.CallOption) (*SetTestResponse, error)
 	SetQuestions(ctx context.Context, opts ...grpc.CallOption) (TestService_SetQuestionsClient, error)
 	EnrollStudents(ctx context.Context, opts ...grpc.CallOption) (TestService_EnrollStudentsClient, error)
-	GetStudentPerTestRequest(ctx context.Context, in *GetStudentsPerTestRequest, opts ...grpc.CallOption) (TestService_GetStudentPerTestRequestClient, error)
+	GetStudentsPerTest(ctx context.Context, in *GetStudentsPerTestRequest, opts ...grpc.CallOption) (TestService_GetStudentsPerTestClient, error)
 }
 
 type testServiceClient struct {
@@ -124,12 +124,12 @@ func (x *testServiceEnrollStudentsClient) CloseAndRecv() (*SetQuestionResponse, 
 	return m, nil
 }
 
-func (c *testServiceClient) GetStudentPerTestRequest(ctx context.Context, in *GetStudentsPerTestRequest, opts ...grpc.CallOption) (TestService_GetStudentPerTestRequestClient, error) {
-	stream, err := c.cc.NewStream(ctx, &TestService_ServiceDesc.Streams[2], "/test.TestService/GetStudentPerTestRequest", opts...)
+func (c *testServiceClient) GetStudentsPerTest(ctx context.Context, in *GetStudentsPerTestRequest, opts ...grpc.CallOption) (TestService_GetStudentsPerTestClient, error) {
+	stream, err := c.cc.NewStream(ctx, &TestService_ServiceDesc.Streams[2], "/test.TestService/GetStudentsPerTest", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &testServiceGetStudentPerTestRequestClient{stream}
+	x := &testServiceGetStudentsPerTestClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -139,16 +139,16 @@ func (c *testServiceClient) GetStudentPerTestRequest(ctx context.Context, in *Ge
 	return x, nil
 }
 
-type TestService_GetStudentPerTestRequestClient interface {
+type TestService_GetStudentsPerTestClient interface {
 	Recv() (*studentpb.Student, error)
 	grpc.ClientStream
 }
 
-type testServiceGetStudentPerTestRequestClient struct {
+type testServiceGetStudentsPerTestClient struct {
 	grpc.ClientStream
 }
 
-func (x *testServiceGetStudentPerTestRequestClient) Recv() (*studentpb.Student, error) {
+func (x *testServiceGetStudentsPerTestClient) Recv() (*studentpb.Student, error) {
 	m := new(studentpb.Student)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -164,7 +164,7 @@ type TestServiceServer interface {
 	SetTest(context.Context, *Test) (*SetTestResponse, error)
 	SetQuestions(TestService_SetQuestionsServer) error
 	EnrollStudents(TestService_EnrollStudentsServer) error
-	GetStudentPerTestRequest(*GetStudentsPerTestRequest, TestService_GetStudentPerTestRequestServer) error
+	GetStudentsPerTest(*GetStudentsPerTestRequest, TestService_GetStudentsPerTestServer) error
 	mustEmbedUnimplementedTestServiceServer()
 }
 
@@ -184,8 +184,8 @@ func (UnimplementedTestServiceServer) SetQuestions(TestService_SetQuestionsServe
 func (UnimplementedTestServiceServer) EnrollStudents(TestService_EnrollStudentsServer) error {
 	return status.Errorf(codes.Unimplemented, "method EnrollStudents not implemented")
 }
-func (UnimplementedTestServiceServer) GetStudentPerTestRequest(*GetStudentsPerTestRequest, TestService_GetStudentPerTestRequestServer) error {
-	return status.Errorf(codes.Unimplemented, "method GetStudentPerTestRequest not implemented")
+func (UnimplementedTestServiceServer) GetStudentsPerTest(*GetStudentsPerTestRequest, TestService_GetStudentsPerTestServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetStudentsPerTest not implemented")
 }
 func (UnimplementedTestServiceServer) mustEmbedUnimplementedTestServiceServer() {}
 
@@ -288,24 +288,24 @@ func (x *testServiceEnrollStudentsServer) Recv() (*EnrollmentRequest, error) {
 	return m, nil
 }
 
-func _TestService_GetStudentPerTestRequest_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _TestService_GetStudentsPerTest_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(GetStudentsPerTestRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(TestServiceServer).GetStudentPerTestRequest(m, &testServiceGetStudentPerTestRequestServer{stream})
+	return srv.(TestServiceServer).GetStudentsPerTest(m, &testServiceGetStudentsPerTestServer{stream})
 }
 
-type TestService_GetStudentPerTestRequestServer interface {
+type TestService_GetStudentsPerTestServer interface {
 	Send(*studentpb.Student) error
 	grpc.ServerStream
 }
 
-type testServiceGetStudentPerTestRequestServer struct {
+type testServiceGetStudentsPerTestServer struct {
 	grpc.ServerStream
 }
 
-func (x *testServiceGetStudentPerTestRequestServer) Send(m *studentpb.Student) error {
+func (x *testServiceGetStudentsPerTestServer) Send(m *studentpb.Student) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -337,8 +337,8 @@ var TestService_ServiceDesc = grpc.ServiceDesc{
 			ClientStreams: true,
 		},
 		{
-			StreamName:    "GetStudentPerTestRequest",
-			Handler:       _TestService_GetStudentPerTestRequest_Handler,
+			StreamName:    "GetStudentsPerTest",
+			Handler:       _TestService_GetStudentsPerTest_Handler,
 			ServerStreams: true,
 		},
 	},

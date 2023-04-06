@@ -45,5 +45,5 @@ service TestService {
   rpc SetTest(Test) returns (SetTestResponse);
   rpc SetQuestions(stream Question) returns (SetQuestionResponse);
   rpc EnrollStudents(stream EnrollmentRequest) returns (SetQuestionResponse);
-  rpc GetStudentPerTestRequest(GetStudentsPerTestRequest) returns (stream student.Student);
+  rpc GetStudentsPerTest(GetStudentsPerTestRequest) returns (stream student.Student);
 }

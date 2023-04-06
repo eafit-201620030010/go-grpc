@@ -17,17 +17,17 @@ DROP TABLE IF EXISTS questions;
 
 CREATE TABLE questions(
   id VARCHAR(32) PRIMARY KEY,
-  question VARCHAR(225) NOT NULL,
-  answer VARCHAR(225) NOT NULL,
   test_id VARCHAR(32) NOT NULL,
+  question VARCHAR(255) NOT NULL,
+  answer VARCHAR(255) NOT NULL,
   FOREIGN KEY (test_id) REFERENCES tests(id)
 );
 
 DROP TABLE IF EXISTS enrollments;
 
 CREATE TABLE enrollments(
-  student_id VARCHAR(32) PRIMARY KEY,
+  student_id VARCHAR(32) NOT NULL,
   test_id VARCHAR(32) NOT NULL,
-  FOREIGN KEY (student_id) REFERENCES students(id)
+  FOREIGN KEY (student_id) REFERENCES students(id),
   FOREIGN KEY (test_id) REFERENCES tests(id)
 );

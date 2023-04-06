@@ -1,13 +1,14 @@
 package main
 
 import (
+	"log"
+	"net"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"jjchavarrg.com/go/grpc/database"
 	"jjchavarrg.com/go/grpc/server"
 	"jjchavarrg.com/go/grpc/testpb"
-	"log"
-	"net"
 )
 
 func main() {
